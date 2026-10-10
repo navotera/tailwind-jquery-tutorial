@@ -69,6 +69,9 @@ Mahasiswa yang mengikuti praktikum dan mempelajari materi melalui demonstrasi in
 
 ### 5.2 Tampilan contoh kode
 
+- Setiap topik Tailwind menjelaskan cara membaca utility, termasuk arti angka, satuan, pilihan nilai tema bawaan, dan perbedaan nilai khusus. Warna memisahkan keluarga/tonalitas 50–950 dari alpha; ukuran membedakan rem, px, persentase, serta nilai preset.
+- Flexbox/Grid diajarkan melalui sumbu dan relasi induk/anak, distribusi basis/grow/shrink, wrap per baris, track baris/kolom, fr/minmax, grid eksplisit/implisit, dan garis/span. Perbandingan lima item memperlihatkan baris terakhir; contoh kombinasi memakai Grid untuk layout luar dan Flexbox untuk isi kartu. Label teks serta border/latar membedakan model layout tanpa bergantung pada warna saja.
+
 - Setiap contoh menampilkan kode dengan syntax highlighting.
 - Kode dapat dibaca dengan jelas pada layar instruktur.
 - Contoh dapat dipisahkan berdasarkan HTML, CSS/Tailwind, dan JavaScript/jQuery jika diperlukan.

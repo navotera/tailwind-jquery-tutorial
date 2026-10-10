@@ -35,6 +35,9 @@
 
 ## Urutan materi Tailwind
 
+- Penjelasan utility harus menguraikan prefix, nilai, satuan, pilihan bawaan, dan sasaran induk/anak bila relevan. Bedakan tonalitas warna 50–950, ukuran spacing berbasis rem, ketebalan garis px, persen, fr, derajat, dan milidetik. Jangan menganggap semua angka berarti piksel; nyatakan asumsi root 16px saat mengonversi rem.
+- Materi Flexbox/Grid menjelaskan sumbu, basis/grow/shrink, wrap per baris, track bersama, fr/minmax, grid eksplisit/implisit, span dan nomor garis. Sertakan perbandingan kebutuhan penggunaan, contoh lima item/baris terakhir, dan Grid luar dengan Flexbox dalam. Gunakan label teks beserta latar/border berbeda agar makna tidak bergantung pada warna saja.
+
 - Persiapan mengikuti konsep CSS framework → instalasi → Hello World → property/utility. Ajarkan spacing/sizing, typography, background, dan border sebelum layout; Flexbox/Grid serta alignment mendahului responsive berbasis layout.
 - Di dalam kelompok, Display mendahului Position/Visibility, Position mendahului Z-index, grow/shrink mendahului Flex Wrap, serta lebar/style border mendahului radius.
 - Proyek Guided Learning harus dipetakan berdasarkan identitas halaman, bukan nomor kelompok tampilan. Semua prasyarat berasal dari kelompok yang sudah dikenalkan; proyek awal tidak menuntut Flex/Grid sebelum materinya.

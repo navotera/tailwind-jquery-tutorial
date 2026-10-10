@@ -208,13 +208,13 @@ const tailwindPropertyReferences = {
   ],
   "tw-text": [
     ["text-align", "text-left · text-center · text-right", "Perataan tulisan di dalam kotak, bukan posisi kotaknya di halaman."],
-    ["color", "text-blue-700 · text-slate-500", "Warna tulisan untuk penekanan atau keterangan. Ini terpisah dari ukuran font."],
+    ["color", "text-blue-700 · text-slate-500", "blue/slate adalah keluarga warna; 700/500 tonalitas, bukan ukuran atau persen. Pilihan 50, 100–900 per 100, dan 950; semakin besar semakin gelap dalam keluarga yang sama."],
     ["text-decoration-line", "underline · overline · line-through", "Garis di bawah, di atas, atau mencoret teks."],
     ["text-decoration-thickness", "decoration-2", "Ketebalan garis dekorasi 2px, bukan ketebalan huruf."],
     ["text-transform", "uppercase · lowercase · capitalize · normal-case", "Ubah tampilan huruf besar/kecil atau kembalikan aslinya. Isi teks HTML tidak diganti."]
   ],
   "tw-bg-color": [
-    ["background-color", "bg-blue-500 · bg-emerald-500", "Latar biru atau hijau. Nomor 500 menunjuk tingkat warna pada palet, bukan opacity."],
+    ["background-color", "bg-blue-500 · bg-emerald-500", "blue/emerald adalah keluarga warna; 500 tonalitas. Pilihan tema: 50, 100–900 per 100, dan 950. Angka kecil lebih terang, besar lebih gelap; bukan opacity atau piksel."],
     ["alpha pada background-color", "bg-blue-500/30 · bg-blue-500/70", "Warna latar dengan alpha 30% atau 70%. Tulisan dan anak tidak ikut dibuat transparan."],
     ["color", "text-white", "Warna teks putih untuk kontras pada latar gelap. Cek lagi jika latar diperlembut."],
     ["opacity", "opacity-30", "Pembanding: membuat seluruh kotak beserta isinya transparan, bukan hanya background."]
@@ -250,7 +250,7 @@ const tailwindPropertyReferences = {
     ["border-width", "border · border-2 · border-4", "Garis semua sisi dengan tebal 1px, 2px, atau 4px."],
     ["border-left-width", "border-l-4", "Garis kiri 4px, cocok untuk penanda catatan."],
     ["border-bottom-width", "border-b-4 · border-b-8", "Garis bawah 4px atau 8px tanpa mengatur ketebalan sisi lain."],
-    ["border-color", "border-blue-500 · border-emerald-500", "Warna garis. Ketebalan dan warna dipilih lewat utility berbeda."]
+    ["border-color", "border-blue-500 · border-emerald-500", "blue/emerald keluarga warna, 500 tonalitas; pilihan 50, 100–900 per 100, 950. Bukan 500px: border-2 mengatur ketebalan 2px secara terpisah."]
   ],
   "tw-border-style": [
     ["border-style: solid", "border-solid", "Garis penuh untuk batas biasa."],
