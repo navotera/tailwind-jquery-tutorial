@@ -9,7 +9,7 @@ import vm from 'node:vm';
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const context = vm.createContext({});
-const files = ['utility-properties.js', 'lessons.js', 'essential-lessons.js', 'lesson-guides.js', 'lesson-examples.js', 'tailwind-reference.js', 'guided-practice.js', 'guided-capstones.js', 'guided-learning.js', 'javascript-lessons.js'];
+const files = ['utility-properties.js', 'lessons.js', 'essential-lessons.js', 'lesson-guides.js', 'lesson-examples.js', 'tailwind-reference.js', 'guided-practice.js', 'guided-capstones.js', 'guided-learning.js', 'javascript-lessons.js', 'tailwind-details.js'];
 for (const file of files) vm.runInContext(readFileSync(join(root, file), 'utf8'), context, { filename: file });
 const catalog = vm.runInContext('lessonCatalog', context);
 const tailwind = catalog.find((track) => track.sectionId === 'tailwind');

@@ -61,7 +61,7 @@ Jangan menyalin folder `node_modules` ke Git; `.gitignore` sudah mengecualikanny
 - Sidebar tetap terlihat di desktop dan dapat dibuka di layar kecil, dengan penomoran section/subsection (1, 1.1, 1.2, dst.)
 - 19 section Tailwind CSS, 1 section JavaScript dasar sebelum jQuery, dan 8 section jQuery; bagian SVG diganti dengan Form, Button, dan Komponen esensial
 - Seluruh 75 halaman memiliki narasi situasi sehari-hari, penjelasan alur contoh, dua langkah pengamatan/percobaan, dan catatan kesalahan umum
-- 169 bagian contoh pada 53 halaman dengan section, termasuk dasar JavaScript, debugging browser, font, text, positioning, flex/grid, filter, tabel, event, DOM, traversing, form, dan AJAX; contoh kecil yang terfokus tetap dipertahankan
+- 195 bagian contoh pada 73 halaman dengan section, termasuk dasar JavaScript, debugging browser, font, text, positioning, flex/grid, filter, tabel, event, DOM, traversing, form, dan AJAX; contoh kecil yang terfokus tetap dipertahankan
 - 28 section Guided learning di akhir setiap kelompok bernomor (19 Tailwind + 1 JavaScript + 8 jQuery): halaman utuh, 13 tahap coding manual, tautan konsep, Copy untuk instruktur/Run, dan latihan integrasi. Proyek JavaScript memakai HTML/CSS native tanpa library.
 - 8 tantangan mandiri per Guided Learning (224 total), masing-masing dengan sasaran kode, instruksi, kriteria berhasil, dan petunjuk opsional; tombol Buka source code di editor mempertahankan draft tanpa menjalankan kode otomatis
 - 10 halaman baru mencakup input/textarea, select/checkbox/radio, validasi dan keadaan form, varian/ukuran button, toggle/loading, card, navbar/breadcrumb, alert, badge/daftar, dan accordion native
@@ -71,7 +71,9 @@ Jangan menyalin folder `node_modules` ke Git; `.gitignore` sudah mengecualikanny
 - Kelompok utama Tailwind CSS, JavaScript dasar, dan jQuery dapat dilipat melalui judulnya, termasuk dengan keyboard. Pencarian membuka kelompok sementara dan memulihkan keadaan sebelumnya setelah pencarian dihapus
 - Pencarian materi dan tautan langsung menggunakan hash URL; tombol Back/Forward browser dapat digunakan
 - Halaman Mengenal property dan utility class memiliki 14 bagian property ditambah Guided learning, dengan daftar isi, tabel property CSS/utility, contoh ber-highlight, Copy untuk instruktur, Run, dan latihan manual per bagian
-- Seluruh 61 halaman Tailwind memiliki tabel Property CSS / Utility Tailwind / Keterangan yang sesuai topiknya. Seluruh 117 bagian contoh Tailwind juga memiliki tabel dengan fokus masing-masing; tabel rinci 1.2 tetap dipertahankan
+- Seluruh 61 halaman Tailwind memiliki penjelasan rinci konsep, nilai, satuan, dan kesalahan umum. Seluruh 143 bagian Tailwind memiliki tabel property; contoh terfokus juga menampilkan pembacaan utility yang dipakai dalam kodenya.
+- Materi warna menjelaskan keluarga, tonalitas `50`, `100`–`900`, `950`, serta alpha `/40`. Buka `#tw-border-width/warna` untuk perbandingan 11 warna border dengan ketebalan sama. Materi lain membedakan skala rem, px, persentase, fr, derajat, milidetik, serta kondisi responsive/state.
+- Flexbox membahas induk/anak, sumbu, basis/grow/shrink, dan wrap per baris. Grid membahas track bersama, fr/minmax, baris implisit, garis, serta span. `#tw-flex-direction/sumbu`, `#tw-grid-template/pilih-layout`, dan `#tw-grid-template/gabungan` menyediakan contoh berlabel: Flexbox biru dan Grid amber, termasuk baris terakhir serta layout bertingkat.
 - Bagian halaman tampil sebagai sub-menu bertanda bullet di bawah nomor materi pada sidebar; klik langsung menuju bagian terkait. Link seperti `#tw-utility/font` mendukung reload serta Back/Forward dan ikut tercakup dalam pencarian sidebar
 - Syntax highlighting untuk HTML, CSS, dan JavaScript
 - Editor kode yang bisa diedit langsung
@@ -131,6 +133,8 @@ Pada halaman yang memiliki bagian, Run memuat dan menjalankan contoh tersebut di
 Untuk cepat beralih ke jQuery, klik judul Tailwind CSS agar tertutup, lalu buka kelompok jQuery. Melipat menu tidak mengganti materi di kanan. Memilih materi melalui navigasi atau tautan langsung membuka kelompok materi tersebut; memperbarui penanda bagian tidak membatalkan collapse manual.
 
 ## Library dan eksekusi
+
+Penjelasan rinci ditambahkan lewat `tailwind-details.js` setelah katalog dan proyek selesai dibentuk. Route lama serta ID section tetap tersedia; section konseptual ditambahkan pada halaman yang sebelumnya belum memiliki bagian terfokus. Nilai mengikuti tema bawaan [Tailwind 3.4: palet warna](https://v3.tailwindcss.com/docs/customizing-colors), [skala jarak](https://v3.tailwindcss.com/docs/customizing-spacing), [Flex](https://v3.tailwindcss.com/docs/flex), dan [Grid](https://v3.tailwindcss.com/docs/grid-template-columns). Perbandingan model layout mengikuti [panduan hubungan Grid dan Flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Grid_layout/Relationship_with_other_layout_methods).
 
 Tailwind Play runtime **3.4.17**, jQuery **3.7.1**, dan Prism **1.29.0** disertakan di `vendor/`. Aplikasi dan mayoritas contoh dapat dipakai tanpa internet setelah server lokal berjalan. Contoh instalasi online (termasuk pengantarnya), referensi eksternal, dan API eksternal membutuhkan internet.
 

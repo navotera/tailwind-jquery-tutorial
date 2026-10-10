@@ -4,7 +4,7 @@ import vm from "node:vm";
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 const curriculumContext = vm.createContext({});
-for (const file of ["utility-properties.js", "lessons.js", "essential-lessons.js", "lesson-guides.js", "lesson-examples.js", "tailwind-reference.js", "guided-practice.js", "guided-capstones.js", "guided-learning.js", "javascript-lessons.js"]) {
+for (const file of ["utility-properties.js", "lessons.js", "essential-lessons.js", "lesson-guides.js", "lesson-examples.js", "tailwind-reference.js", "guided-practice.js", "guided-capstones.js", "guided-learning.js", "javascript-lessons.js", "tailwind-details.js"]) {
   vm.runInContext(read(file), curriculumContext, { filename: file });
 }
 const lesson = vm.runInContext("javascriptBasicLesson", curriculumContext);
