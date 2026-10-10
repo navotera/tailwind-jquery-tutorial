@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="id" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Tutorial praktikum Tailwind CSS, JavaScript dasar, dan jQuery untuk demonstrasi instruktur." />
+    <title>Codeforge Lab — Tutorial Tailwind CSS, JavaScript & jQuery</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="./vendor/prism-1.29.0.min.js" data-manual></script>
+    <script defer src="./vendor/prism-css.min.js"></script>
+    <script defer src="./vendor/prism-javascript.min.js"></script>
+    <script defer src="./utility-properties.js"></script>
+    <script defer src="./lessons.js"></script>
+    <script defer src="./essential-lessons.js"></script>
+    <script defer src="./lesson-guides.js"></script>
+    <script defer src="./lesson-examples.js"></script>
+    <script defer src="./tailwind-reference.js"></script>
+    <script defer src="./guided-practice.js"></script>
+    <script defer src="./guided-capstones.js"></script>
+    <script defer src="./guided-learning.js"></script>
+    <script defer src="./javascript-lessons.js"></script>
+    <script defer src="./code-editor.js"></script>
+    <script defer src="./vendor/material-rich-editor.min.js"></script>
+    <script defer src="./material-editor.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#mainContent">Langsung ke materi</a>
+    <header class="topbar">
+      <div class="topbar-left">
+        <button class="icon-button menu-toggle" id="openSidebar" type="button" aria-label="Buka navigasi" aria-controls="sidebar" aria-expanded="false">☰</button>
+        <a class="brand" href="#tw-framework">&lt;/&gt; <span>codeforge <small>LAB</small></span></a>
+        <span class="topbar-caption">Tutorial praktikum</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="instructor-label">Ruang instruktur</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Gunakan tema gelap">◐ <span>Tema</span></button>
+      </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar" aria-label="Daftar materi">
+      <div class="sidebar-top"><h2>Daftar materi</h2><button class="icon-button mobile-close" id="closeSidebar" type="button" aria-label="Tutup navigasi">×</button></div>
+      <p class="sidebar-help">Pilih topik apa saja. Klik judul kelompok materi untuk melipat menunya.</p>
+      <label class="search-label" for="lessonSearch">Cari materi</label>
+      <input id="lessonSearch" class="lesson-search" type="search" placeholder="Cari, misalnya grid…" autocomplete="off" />
+      <nav class="course-nav" id="courseNav" aria-label="Navigasi section dan subsection"></nav>
+      <p id="searchEmpty" class="search-empty" hidden>Tidak ada materi yang cocok.</p>
+      <div class="sidebar-footer">Tailwind CSS 3.4 · JavaScript · jQuery 3.7</div>
+    </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop" hidden></div>
+
+    <main class="main-content" id="mainContent" tabindex="-1">
+      <div class="breadcrumbs"><span id="breadcrumbTrack">Tailwind CSS</span><span aria-hidden="true">/</span><span id="breadcrumbSection">Pengenalan</span></div>
+      <article aria-labelledby="lessonTitle">
+        <header class="lesson-hero">
+          <div class="eyebrow-row"><span class="pill" id="lessonTrack">TAILWIND CSS</span><span id="lessonIndex">1.1</span></div>
+          <h1 id="lessonTitle">Apa itu CSS framework?</h1>
+          <p class="lesson-description" id="lessonDescription"></p>
+        </header>
+
+        <section class="learning-card" aria-labelledby="practiceTitle">
+          <p class="section-label">TUJUAN PEMBELAJARAN</p>
+          <h2 id="practiceTitle">Memahami konsep dan mencoba kode</h2>
+          <div class="outcome-list" id="outcomeList"></div>
+          <p class="lesson-lead" id="lessonLead"></p>
+          <div class="lesson-walkthrough"><h3>Cara membaca dan mencoba contoh</h3><ol id="lessonWalkthrough"></ol></div>
+          <div class="manual-typing-rule"><strong>Aturan praktikum mahasiswa</strong><p>Gunakan contoh sebagai acuan. Jika editor sudah berisi kode, pilih semua dan hapus, lalu ketik ulang sendiri baris demi baris. Jangan copy-paste; jalankan dan amati hasil setiap perubahan. Tombol Copy disediakan untuk instruktur.</p></div>
+          <div class="tip-callout"><strong>Catatan instruktur</strong><p id="lessonNote"></p></div>
+        </section>
+
+        <section id="lessonPropertyReference" class="lesson-property-reference" aria-labelledby="lessonPropertyTitle" hidden>
+          <p class="section-label">DARI CSS KE UTILITY</p>
+          <h2 id="lessonPropertyTitle">Property yang dipakai pada materi ini</h2>
+          <p>Baca dari kiri ke kanan: apa yang diatur di CSS, class Tailwind yang dipilih, lalu pengaruhnya pada tampilan. Cocokkan dengan contoh sebelum mencoba mengubahnya.</p>
+          <div id="lessonPropertyTable"></div>
+          <p class="property-reference-note">Acuan: Tailwind 3.4 dengan tema bawaan. Nilai rem mengikuti ukuran font root; angka pada nama utility bukan selalu jumlah piksel. Beberapa utility menyusun beberapa aturan CSS sekaligus, bukan satu deklarasi saja.</p>
+        </section>
+
+        <div id="lessonExampleSections" hidden>
+          <section id="codeComparison" class="code-comparison" aria-label="Perbandingan kode native CSS dan Tailwind" hidden></section>
+          <div id="lessonSections" class="lesson-sections" hidden></div>
+        </div>
+
+        <section class="workspace-panel" id="lessonWorkspace" aria-labelledby="workspaceTitle">
+          <div class="workspace-heading">
+            <div><p class="section-label">CONTOH INTERAKTIF</p><h2 id="workspaceTitle">Edit kode, jalankan, amati hasilnya.</h2></div>
+            <div class="workspace-tools">
+              <div class="code-font-controls" role="group" aria-label="Ukuran font source code">
+                <button id="decreaseCodeFont" type="button" aria-label="Perkecil font kode" title="Perkecil font kode">A−</button>
+                <output id="codeFontSize" aria-live="polite" aria-label="Ukuran font kode">14px</output>
+                <button id="increaseCodeFont" type="button" aria-label="Perbesar font kode" title="Perbesar font kode">A+</button>
+                <button id="resetCodeFont" type="button" aria-label="Kembalikan ukuran font kode ke 14px" title="Reset ukuran font kode">↺</button>
+              </div>
+              <button id="wordWrapToggle" class="word-wrap-toggle" type="button" aria-controls="codeEditor" aria-pressed="false" title="Bungkus baris kode panjang agar mengikuti lebar editor">Word wrap: nonaktif</button>
+              <button id="toggleWorkspaceFullscreen" class="workspace-fullscreen-button" type="button" aria-label="Buka kode dan preview dalam layar penuh" aria-controls="lessonWorkspace" aria-pressed="false" aria-keyshortcuts="Escape" title="Layar penuh kode dan preview">Layar penuh kode + preview</button>
+              <button id="showPreview" class="show-preview-button" type="button" aria-controls="previewPanel" hidden>Tampilkan preview</button>
+              <span class="workspace-shortcut"><kbd>Ctrl / ⌘</kbd> + <kbd>Enter</kbd></span>
+            </div>
+          </div>
+          <div class="example-context" id="exampleContext" hidden><span id="exampleLabel"></span><button id="overviewExample" type="button">Kembali ke contoh pengantar</button></div>
+          <div class="workspace-layout" id="workspaceLayout">
+            <section class="editor-panel" id="editorPanel" aria-label="Editor kode">
+              <div class="editor-toolbar">
+                <div class="file-tabs" role="tablist" aria-label="File contoh">
+                  <button id="tab-html" class="file-tab is-active" type="button" role="tab" data-file="html" aria-selected="true" aria-controls="codePanel">HTML</button>
+                  <button id="tab-css" class="file-tab" type="button" role="tab" data-file="css" aria-selected="false" aria-controls="codePanel" tabindex="-1">CSS</button>
+                  <button id="tab-js" class="file-tab" type="button" role="tab" data-file="js" aria-selected="false" aria-controls="codePanel" tabindex="-1">JavaScript</button>
+                </div>
+                <div class="editor-toolbar-actions">
+                  <button class="toolbar-fullscreen" id="toggleEditorFullscreen" type="button" aria-label="Buka editor dalam layar penuh" aria-controls="editorPanel" aria-pressed="false" aria-keyshortcuts="Escape" title="Layar penuh">⛶</button>
+                  <button class="toolbar-copy" id="copyCode" type="button" aria-label="Salin kode file aktif untuk instruktur" title="Copy untuk instruktur">Copy · instruktur</button>
+                </div>
+              </div>
+              <div class="editor-frame" id="codePanel" role="tabpanel" aria-labelledby="tab-html">
+                <div class="line-number-viewport" aria-hidden="true"><div class="line-numbers" id="lineNumbers">1</div></div>
+                <div class="code-layer">
+                  <pre class="code-highlight" id="codeHighlight" aria-hidden="true"><code id="highlightedCode"></code></pre>
+                  <div id="codeMeasure" class="code-measure" aria-hidden="true"></div>
+                  <textarea id="codeEditor" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off" aria-label="Kode HTML" aria-describedby="editorHint"></textarea>
+                </div>
+              </div>
+              <div class="editor-footer"><span id="fileLanguage">HTML</span><span id="lineCount">1 baris</span><span id="editorHint">Ketik manual; Copy untuk instruktur</span></div>
+            </section>
+
+            <div class="workspace-resizer" id="workspaceResizer" role="separator" aria-label="Atur lebar editor dan preview" aria-orientation="vertical" aria-controls="editorPanel previewPanel" aria-valuemin="20" aria-valuemax="80" aria-valuenow="50" aria-valuetext="Kode 50%, preview 50%" tabindex="0"></div>
+            <section class="preview-panel" id="previewPanel" aria-label="Hasil eksekusi">
+              <div class="preview-toolbar"><strong>Preview hasil</strong><div class="preview-toolbar-actions"><span class="preview-status" id="previewStatus" role="status">Belum dijalankan</span><button class="toolbar-fullscreen" id="togglePreviewFullscreen" type="button" aria-label="Buka preview dalam layar penuh" aria-controls="previewPanel" aria-pressed="false" aria-keyshortcuts="Escape" title="Layar penuh">⛶</button><button id="closePreview" class="preview-close" type="button" aria-label="Tutup preview dan perluas editor" aria-controls="previewPanel" title="Tutup preview dan perluas editor">×</button></div></div>
+              <div class="preview-viewport"><iframe id="previewFrame" title="Preview hasil kode" sandbox="allow-scripts allow-forms"></iframe><div class="preview-empty" id="previewEmpty"><span aria-hidden="true">&lt;/&gt;</span><p>Tekan Run untuk melihat hasil kode.</p></div></div>
+              <div class="preview-footer"><span>Eksekusi di iframe sandbox</span><button id="runCodeSecondary" type="button">↻ Jalankan ulang</button></div>
+            </section>
+          </div>
+
+          <div class="console-bar" id="consoleBar" role="status" aria-live="polite"><span aria-hidden="true">›_</span><span id="consoleMessage">Preview belum dijalankan.</span><button id="clearConsole" type="button" aria-label="Bersihkan pesan">×</button></div>
+          <div class="workspace-actions"><button class="reset-button" id="resetCode" type="button">↺ Reset contoh</button><button class="run-button" id="runCode" type="button">Run <span aria-hidden="true">▶</span></button></div>
+        </section>
+
+        <section class="assignment-card" aria-labelledby="assignmentTitle"><p class="section-label">LATIHAN SINGKAT</p><h2 id="assignmentTitle">Coba sendiri</h2><p id="assignmentText"></p><button class="text-button" id="focusEditor" type="button">Edit contoh ↑</button></section>
+        <div class="course-source"><span>Kerangka materi praktikum; dapat disesuaikan oleh instruktur.</span><a id="lessonReference" href="https://www.geeksforgeeks.org/css/tailwind-css/" target="_blank" rel="noreferrer">Referensi Tailwind CSS ↗</a></div>
+      </article>
+
+      <nav class="lesson-navigation" aria-label="Navigasi materi"><button class="lesson-nav-button" id="previousLesson" type="button"><small>← Sebelumnya</small><strong id="previousTitle">Materi pertama</strong></button><button class="lesson-nav-button next" id="nextLesson" type="button"><small>Berikutnya →</small><strong id="nextTitle">Materi berikutnya</strong></button></nav>
+      <noscript><p>Aktifkan JavaScript untuk membuka materi, mengedit kode, dan menjalankan preview.</p></noscript>
+    </main>
+  </body>
+</html>
