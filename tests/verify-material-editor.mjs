@@ -149,7 +149,7 @@ try {
     const verifyToolbarScroll = async () => {
       const shell = section.locator('.material-editor-shell');
       await section.locator('.material-edit-panel').evaluate((node) => node.scrollIntoView({ block: 'start' }));
-      assert.equal(await shell.locator('.material-toolbar button').count(), await shell.locator('.material-toolbar button svg').count(), 'Semua tombol format memakai ikon Palemo');
+      assert.equal(await shell.locator('.material-toolbar button').count(), await shell.locator('.material-toolbar button svg').count(), 'Semua tombol format memakai ikon Lucide');
       const toolbar = shell.locator('.material-toolbar'), viewport = shell.locator('.material-editor-viewport');
       const before = await toolbar.boundingBox();
       await viewport.evaluate((node) => { node.scrollTop = node.scrollHeight; });
@@ -203,9 +203,9 @@ try {
     assert.equal(await page.evaluate(() => window.BAD_PASTE), undefined);
     // Paste Markdown from an HTML clipboard wrapper, as produced by AI editors.
     await surface.press('ControlOrMeta+a'); await surface.press('Backspace');
-    const portable = '# Portable dari Palemo\n\n**Tebal** *miring* ++garis bawah++ ~~coret~~ dan `kode_inline`\n\n- Induk\n  - Anak\n\n- [x] Selesai\n- [ ] Belum\n\n> Kutipan **penting**\n\n---\n\n[Referensi](https://example.com/docs)\n\n| Nama | Isi |\n| --- | --- |\n| Ani | `a\\|b` |\n\n```typescript\nconst total: number = 2;\n```';
+    const portable = '# Materi Markdown portable\n\n**Tebal** *miring* ++garis bawah++ ~~coret~~ dan `kode_inline`\n\n- Induk\n  - Anak\n\n- [x] Selesai\n- [ ] Belum\n\n> Kutipan **penting**\n\n---\n\n[Referensi](https://example.com/docs)\n\n| Nama | Isi |\n| --- | --- |\n| Ani | `a\\|b` |\n\n```typescript\nconst total: number = 2;\n```';
     await paste(portable, `<div>${portable.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</div>`);
-    assert.equal(await surface.locator('h1').textContent(), 'Portable dari Palemo');
+    assert.equal(await surface.locator('h1').textContent(), 'Materi Markdown portable');
     assert.equal(await surface.locator('u').textContent(), 'garis bawah');
     assert.equal(await surface.locator('s').textContent(), 'coret');
     assert.equal(await surface.locator('li ul').count(), 1);

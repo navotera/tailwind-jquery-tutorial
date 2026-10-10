@@ -1,4 +1,4 @@
-/* Editor materi instruktur, diadaptasi dari editor Knowledge Palemo. */
+/* Editor materi instruktur. */
 window.MaterialEditor = (() => {
   const engine = window.MaterialRichEditor || globalThis.MaterialRichEditor;
   const drafts = new Map(), records = new Map(), sessions = new Set();
@@ -184,7 +184,7 @@ window.MaterialEditor = (() => {
     const panel = document.createElement('div'); panel.className = 'material-edit-panel';
     panel.innerHTML = `<div class="material-edit-heading"><h3>${section.isNew ? 'Section baru' : 'Edit materi'}</h3><button type="button" data-mode aria-pressed="false">Markdown</button></div>
       ${section.custom ? `<label class="material-section-title">Judul section<input type="text" data-section-title maxlength="200" required placeholder="Misalnya: Contoh tambahan" value="${escape(draft.title)}"></label>` : ''}
-      <p class="material-help">Tempel materi dari Palemo atau AI. Markdown, tabel, checklist, dan kode otomatis berformat. Gunakan Markdown untuk mengedit sumber .md. Gambar maksimal 5 MB per file.</p>
+      <p class="material-help">Tempel materi dari editor lain atau AI. Markdown, tabel, checklist, dan kode otomatis berformat. Gunakan Markdown untuk mengedit sumber .md. Gambar maksimal 5 MB per file.</p>
       <div class="material-editor-shell">
       <div class="material-toolbar" role="toolbar" aria-label="Format materi">
         <div class="material-tool-group"><label class="material-heading-control" title="Format paragraf">${engine.icon('heading')}<select data-heading aria-label="Format paragraf"><option value="p">Paragraf</option><option value="h1">Heading 1</option><option value="h2">Heading 2</option><option value="h3">Heading 3</option></select></label></div>

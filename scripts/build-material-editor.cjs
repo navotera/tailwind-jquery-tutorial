@@ -1,11 +1,10 @@
-// Rebuild the checked-in browser bundle from an installed Tiptap toolchain.
-// Example: node scripts/build-material-editor.cjs C:/laragon/www/Palemo/web
+// Rebuild the checked-in browser bundle from this repository's isolated toolchain.
 const path = require('node:path');
 const fs = require('node:fs');
-const sourceRoot = path.resolve(process.argv[2] || '.');
-const modules = path.join(sourceRoot, 'node_modules');
-const esbuild = require(require.resolve('esbuild', { paths: [sourceRoot] }));
 const root = path.resolve(__dirname, '..');
+const toolchainRoot = path.join(root, 'tools', 'material-editor');
+const modules = path.join(toolchainRoot, 'node_modules');
+const esbuild = require(require.resolve('esbuild', { paths: [toolchainRoot] }));
 const build = esbuild.buildSync({
   entryPoints: [path.join(root, 'material-rich-editor.mjs')],
   outfile: path.join(root, 'vendor/material-rich-editor.min.js'),
@@ -32,4 +31,4 @@ const notices = [...packages.values()].sort((a, b) => a.metadata.name.localeComp
   return `${metadata.name} ${metadata.version} (${metadata.license || 'See package license'})\n${license ? fs.readFileSync(path.join(directory, license), 'utf8') : `Source: ${typeof metadata.repository === 'string' ? metadata.repository : metadata.repository?.url || metadata.homepage || metadata.name}`}`;
 });
 fs.writeFileSync(path.join(root, 'vendor/material-rich-editor.NOTICES.txt'), notices.join('\n\n---\n\n'));
-console.log('Browser editor bundle rebuilt from the installed Palemo toolchain.');
+console.log('Browser editor bundle rebuilt from the repository toolchain.');

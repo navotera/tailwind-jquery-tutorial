@@ -1,5 +1,4 @@
-// Adapted from Palemo/web/src/KnowledgeRichEditor.tsx for this vanilla JS app.
-// Same Tiptap 3.29.2 / ProseMirror / Markdown / Lowlight engine; no React runtime.
+// Standalone vanilla JavaScript rich editor built with Tiptap, Markdown, and Lowlight.
 import { Editor, Extension, markInputRule, markPasteRule } from '@tiptap/core';
 import { icon } from './material-editor-icons.mjs';
 export { icon };
@@ -51,7 +50,7 @@ export function safeUrl(value, image = false) {
   try { return /^https?:$/.test(new URL(value).protocol); } catch (_) { return false; }
 }
 export function detectCodeLanguage(source) {
-  // Palemo's bounded language detection, kept ahead of the raw-HTML paste path.
+  // Bounded language detection, kept ahead of the raw-HTML paste path.
   const code = source.slice(0, 20000).trim();
   if (code.length < 3) return null;
   try { const data = JSON.parse(code); if (data && typeof data === 'object') return 'json'; } catch (_) { /* Try patterns. */ }

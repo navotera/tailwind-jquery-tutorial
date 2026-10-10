@@ -30,19 +30,17 @@ Lalu buka `http://localhost:8000`.
 
 Untuk menjalankan aplikasi utama, **tidak perlu `npm install`**. Frontend memakai library lokal di `vendor/`, dan server PHP menangani API serta database SQLite. Jadi setelah clone, cukup siapkan PHP seperti di atas; folder `node_modules` tidak diperlukan untuk penggunaan sehari-hari.
 
-Node.js dan npm hanya diperlukan untuk pekerjaan pengembangan tertentu:
+Node.js dan npm diperlukan hanya bila mengubah source editor dan membangun ulang bundle browser. Toolchain build sudah disediakan mandiri di repo ini:
 
-- Jika mengubah source editor (`material-rich-editor.mjs` atau `material-editor-icons.mjs`) dan ingin membangun ulang bundle browser, pasang dependency proyek Palemo dari folder `web`-nya, lalu jalankan build dari folder aplikasi ini:
+```powershell
+cd C:\laragon\www\tailwind-jquery-tutorial\tools\material-editor
+npm ci
+npm run build
+cd ..\..
+node tests/verify-material-editor.mjs
+```
 
-  ```powershell
-  cd C:\laragon\www\Palemo\web
-  npm ci
-  cd C:\laragon\www\tailwind-jquery-tutorial
-  node scripts/build-material-editor.cjs C:\laragon\www\Palemo\web
-  node tests/verify-material-editor.mjs
-  ```
-
-  `npm ci` membuat `node_modules` berdasarkan `package-lock.json` Palemo. Langkah ini hanya untuk toolchain build; aplikasi tetap memakai bundle lokal `vendor/material-rich-editor.min.js` dan tidak memerlukan Palemo saat dijalankan.
+Perintah tersebut memasang dependency dari `tools/material-editor/package-lock.json` dan membangun `vendor/material-rich-editor.min.js`. Pengguna aplikasi tidak perlu menjalankan langkah ini; bundle hasil build sudah disertakan.
 - Folder `contoh_script` memiliki `package.json` sendiri untuk eksperimen Tailwind 4/Vite. Jika mengerjakan contoh tersebut, pasang dependency di folder itu saja:
 
   ```powershell
@@ -55,8 +53,8 @@ Jangan menyalin folder `node_modules` ke Git; `.gitignore` sudah mengecualikanny
 ## Fitur yang tersedia
 
 - Tombol **Edit materi** berada di kanan judul section. **Add new** di kanan judul daftar isi membuka section tambahan dengan judul dan editor materi yang sama; klik **Simpan materi** agar tampil kembali setelah reload. Section baru ditambahkan di akhir halaman serta masuk daftar isi/sidebar, mendukung tautan langsung, dan bisa diedit kembali termasuk judulnya. **Batal** membuang section baru yang belum disimpan.
-- Setiap bagian materi mempunyai tombol **Edit materi**, dengan engine Tiptap/ProseMirror, Markdown, dan Lowlight yang sama dengan editor Knowledge Palemo. Toolbar menyediakan heading, undo/redo, bold/italic/underline/coret, hapus format, daftar bertingkat/nomor/checklist, kutipan, garis horizontal, tautan, tabel, blok kode, warna, dan gambar. Tombol **Markdown** membuka sumber `.md`; tombol **Visual** mengembalikan WYSIWYG. **Pratinjau**, **Simpan materi**, `Ctrl+S`, dan **Batal** tetap tersedia.
-- Paste dari Palemo atau AI menerima Markdown maupun HTML berformat. Markdown diprioritaskan jika clipboard memuat kedua format. Fenced code mempertahankan bahasa; kode tanpa fence dikenali otomatis bila polanya jelas. Setiap blok kode mempunyai pilihan bahasa manual, highlighting, tombol salin, indentasi Tab, dan paragraf setelahnya. Highlighting mendukung HTML/XML, CSS, JavaScript, TypeScript, JSON, PHP, SQL, Bash, Python, Go, Java, dan C#. Kode pada mode baca ditampilkan sebagai teks.
+- Setiap bagian materi mempunyai tombol **Edit materi**, dengan engine Tiptap/ProseMirror, Markdown, dan Lowlight. Toolbar menyediakan heading, undo/redo, bold/italic/underline/coret, hapus format, daftar bertingkat/nomor/checklist, kutipan, garis horizontal, tautan, tabel, blok kode, warna, dan gambar. Tombol **Markdown** membuka sumber `.md`; tombol **Visual** mengembalikan WYSIWYG. **Pratinjau**, **Simpan materi**, `Ctrl+S`, dan **Batal** tetap tersedia.
+- Paste dari editor lain atau AI menerima Markdown maupun HTML berformat. Markdown diprioritaskan jika clipboard memuat kedua format. Fenced code mempertahankan bahasa; kode tanpa fence dikenali otomatis bila polanya jelas. Setiap blok kode mempunyai pilihan bahasa manual, highlighting, tombol salin, indentasi Tab, dan paragraf setelahnya. Highlighting mendukung HTML/XML, CSS, JavaScript, TypeScript, JSON, PHP, SQL, Bash, Python, Go, Java, dan C#. Kode pada mode baca ditampilkan sebagai teks.
 - Gambar PNG/JPG/WebP/GIF dapat ditambahkan lewat **Tambah gambar**, paste, atau drag-and-drop, maksimal 5 MB per file dan 40 megapixel. Untuk file besar, sesuaikan PHP `upload_max_filesize` dan `post_max_size`. Gambar upload disimpan dalam SQLite. **Gambar URL** dan Markdown `![alt](https://...)` menerima URL http/https; gambar eksternal bergantung pada server URL tersebut, dengan alt maksimal 255 karakter. Data URI/base64 tidak diterima.
 - Materi tersimpan dimuat kembali saat membuka halaman atau reload. Draft belum disimpan dipertahankan selama perpindahan materi dalam tab yang sama; reload memberikan peringatan bila ada draft. Penyimpanan mendeteksi perubahan dari tab lain agar tidak menimpanya.
 
@@ -104,7 +102,7 @@ Kelompok 1 berisi **CSS framework → instalasi → Hello World**; kelompok 2 be
 
 Nomor materi mengikuti urutan ini; ID halaman/bagian tetap sama, termasuk route Guided Learning dan identitas materi SQLite. Prasyarat serta label tautan konsep mengikuti urutan baru. Pemeriksaan terarah: `node tests/verify-tailwind-order.mjs`.
 
-Sumber engine editor ada di `material-rich-editor.mjs`, diadaptasi dari `../Palemo/web/src/KnowledgeRichEditor.tsx`. Bundle browser `vendor/material-rich-editor.min.js` sudah tersedia dan tidak memerlukan Palemo saat runtime. Bila sumber engine diubah, bangun ulang dengan toolchain Tiptap 3.29.2 yang terpasang, misalnya `node scripts/build-material-editor.cjs C:/laragon/www/Palemo/web`, lalu jalankan pemeriksaan editor. Pengujian browser opsional dapat diaktifkan dengan environment variable `BROWSER_MODULE_PATH` yang menunjuk entry `.mjs` Playwright terpasang. Requirement yang diadaptasi dari spesifikasi Knowledge Palemo tercatat pada `AGENTS.md`.
+Source engine editor ada di `material-rich-editor.mjs`; dependency build terkunci di `tools/material-editor/package-lock.json`. Jalankan `npm ci` lalu `npm run build` dari `tools/material-editor` untuk membangun ulang bundle lokal. Bundle browser `vendor/material-rich-editor.min.js` sudah tersedia dan tidak memerlukan package Node saat runtime. Pengujian browser opsional dapat diaktifkan dengan environment variable `BROWSER_MODULE_PATH` yang menunjuk entry `.mjs` Playwright terpasang.
 
 Tidak ada login, penyimpanan progres mahasiswa, atau penguncian urutan materi. Kerangka dan contoh pengantar tersedia di `lessons.js`. Narasi hasil review untuk semua halaman ada di `lesson-guides.js`, sedangkan contoh terpisah dan penyesuaian contoh ada di `lesson-examples.js`. Isi rinci halaman property tersedia di `utility-properties.js`. Pemetaan property/utility per halaman dan pilihan baris tabel per bagian tersedia di `tailwind-reference.js`, dimuat setelah contoh dan sebelum aplikasi.
 
