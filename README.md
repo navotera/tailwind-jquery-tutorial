@@ -26,6 +26,32 @@ php -S localhost:8000
 
 Lalu buka `http://localhost:8000`.
 
+## Setup Node.js dan `node_modules`
+
+Untuk menjalankan aplikasi utama, **tidak perlu `npm install`**. Frontend memakai library lokal di `vendor/`, dan server PHP menangani API serta database SQLite. Jadi setelah clone, cukup siapkan PHP seperti di atas; folder `node_modules` tidak diperlukan untuk penggunaan sehari-hari.
+
+Node.js dan npm hanya diperlukan untuk pekerjaan pengembangan tertentu:
+
+- Jika mengubah source editor (`material-rich-editor.mjs` atau `material-editor-icons.mjs`) dan ingin membangun ulang bundle browser, pasang dependency proyek Palemo dari folder `web`-nya, lalu jalankan build dari folder aplikasi ini:
+
+  ```powershell
+  cd C:\laragon\www\Palemo\web
+  npm ci
+  cd C:\laragon\www\tailwind-jquery-tutorial
+  node scripts/build-material-editor.cjs C:\laragon\www\Palemo\web
+  node tests/verify-material-editor.mjs
+  ```
+
+  `npm ci` membuat `node_modules` berdasarkan `package-lock.json` Palemo. Langkah ini hanya untuk toolchain build; aplikasi tetap memakai bundle lokal `vendor/material-rich-editor.min.js` dan tidak memerlukan Palemo saat dijalankan.
+- Folder `contoh_script` memiliki `package.json` sendiri untuk eksperimen Tailwind 4/Vite. Jika mengerjakan contoh tersebut, pasang dependency di folder itu saja:
+
+  ```powershell
+  cd C:\laragon\www\tailwind-jquery-tutorial\contoh_script
+  npm ci
+  ```
+
+Jangan menyalin folder `node_modules` ke Git; `.gitignore` sudah mengecualikannya. File `package-lock.json` tetap disimpan agar instalasi dapat direproduksi.
+
 ## Fitur yang tersedia
 
 - Tombol **Edit materi** berada di kanan judul section. **Add new** di kanan judul daftar isi membuka section tambahan dengan judul dan editor materi yang sama; klik **Simpan materi** agar tampil kembali setelah reload. Section baru ditambahkan di akhir halaman serta masuk daftar isi/sidebar, mendukung tautan langsung, dan bisa diedit kembali termasuk judulnya. **Batal** membuang section baru yang belum disimpan.
