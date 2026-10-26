@@ -207,7 +207,10 @@ const tailwindPaletteTable = { title: 'Pilihan tonalitas palet bawaan', headers:
 tailwindDetailLessons.forEach((lesson) => {
   if (['tw-border-width', 'tw-bg-color', 'tw-text', 'tw-flex-direction', 'tw-flex-sizing', 'tw-flex-wrap', 'tw-grid-template', 'tw-grid-span'].includes(lesson.id)) lesson.lead += ` ${tailwindTopicDetails[lesson.id][0]}`;
   const sections = lesson.sections.filter((section) => !section.guided);
-  sections[0].paragraphs.push(...tailwindTopicDetails[lesson.id]);
+  // Penjelasan rinci menempel pada contoh pertama yang sebenarnya, bukan pada section
+  // pendahuluan "konsep-dasar", agar intro tetap ringkas dan mudah dipahami pemula.
+  const primary = sections.find((section) => section.id !== 'konsep-dasar') || sections[0];
+  primary.paragraphs.push(...tailwindTopicDetails[lesson.id]);
   // Setiap section memperoleh pembacaan nilai yang memang muncul dalam kodenya.
   sections.forEach((section) => {
     section.paragraphs.push(...(tailwindSectionDetails[`${lesson.id}/${section.id}`] || []));
@@ -216,7 +219,10 @@ tailwindDetailLessons.forEach((lesson) => {
     const tokens = [...new Set([...source.matchAll(/\bclass=["']([^"']+)["']/g)].flatMap((match) => match[1].split(/\s+/)))];
     const teachingTokens = lesson.id === 'tw-border-width' && section.id === 'warna' ? tokens.filter((token) => !/^border-blue-\d+$/.test(token) || token === 'border-blue-500') : tokens;
     const readings = teachingTokens.map((token) => [token, tailwindExplainUtility(token)]).filter(([, explanation]) => explanation);
-    if (readings.length) (section.learningTables ||= []).push({ title: 'Membaca nilai utility pada contoh ini', headers: ['Utility', 'Arti nilai dan satuannya'], rows: readings });
+    // Section pendahuluan memakai tabel "Property dan utility" yang sudah fokus pada
+    // class layout; lewati tabel pembacaan otomatis agar tidak memunculkan utility
+    // kosmetik (padding, margin, warna) yang tidak terkait konsep grid/flex.
+    if (readings.length && section.id !== 'konsep-dasar') (section.learningTables ||= []).push({ title: 'Membaca nilai utility pada contoh ini', headers: ['Utility', 'Arti nilai dan satuannya'], rows: readings });
     if (lesson.id === 'tw-bg-color' || lesson.id === 'tw-border-width' && section.id === 'warna' || lesson.id === 'tw-text' && section.id === 'warna-dekorasi') (section.learningTables ||= []).push(tailwindPaletteTable);
   });
   const choices = {
@@ -237,5 +243,5 @@ tailwindDetailLessons.forEach((lesson) => {
     'tw-font': ['font-* / text-* / leading-*', 'Berat 100–900; ukuran xs/sm/base/lg/xl/2xl–9xl; leading none/tight/snug/normal/relaxed/loose atau 3–10.', 'Nama token dari tema; ukuran dan line-height adalah property berbeda.'],
     'tw-flex-sizing': ['basis / grow / shrink / flex', 'basis-* memakai ukuran awal; grow/grow-0; shrink/shrink-0; flex-1/auto/initial/none.', 'Shorthand flex mengatur tiga property sekaligus. Gunakan basis-[200px] atau grow-[2] untuk nilai khusus.']
   }[lesson.id];
-  if (choices) (sections[0].learningTables ||= []).unshift({ title: 'Pilihan nilai pada tema bawaan Tailwind 3.4', headers: ['Pola', 'Pilihan', 'Batas pemahaman'], rows: [choices] });
+  if (choices) (primary.learningTables ||= []).unshift({ title: 'Pilihan nilai pada tema bawaan Tailwind 3.4', headers: ['Pola', 'Pilihan', 'Batas pemahaman'], rows: [choices] });
 });

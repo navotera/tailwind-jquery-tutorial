@@ -171,6 +171,221 @@ example("tw-place", "self", "Place-self untuk satu item", "Dalam grid yang sama,
 example("tw-minmax", "lebar", "Lebar responsif dengan batas maksimum", "Paragraf perlu lebar yang nyaman, bukan memenuhi layar besar.", "W-full mengisi ruang yang tersedia, tetapi max-w-sm membatasinya. Pada ruang lebih sempit, kartu tetap dapat mengecil.", '<div class="w-full max-w-sm rounded bg-blue-100 p-4">Kartu ini tidak terus melebar mengikuti layar.</div>', "Ganti max-w-sm menjadi max-w-lg.", "Max-width adalah batas atas, bukan jaminan lebar tetap.");
 example("tw-minmax", "tinggi", "Batas tinggi dan isi panjang", "Panel kecil tetap perlu menampilkan data yang bisa bertambah.", "Min-h-24 menyediakan tinggi minimum. Max-h-40 membatasi pembesaran, lalu overflow-auto memberi akses ke sisa isi.", '<div class="min-h-24 max-h-40 overflow-auto rounded border p-3"><div class="h-64 bg-emerald-100 p-3">Isi panjang<div class="pt-48">Akhir isi</div></div></div>', "Ubah max-h-40 menjadi max-h-24.", "Batas tinggi tanpa overflow yang sesuai dapat membuat isi keluar atau tidak terjangkau.");
 
+// === Latihan variasi tata letak (layout) Flexbox dan Grid ===
+// Tiap variasi memakai kotak berwarna kalem dengan label teks sehingga mahasiswa
+// dapat membaca kerangka susunannya. Tombol Copy (untuk instruktur), Run, dan
+// preview tersedia otomatis seperti contoh lain. rows diisi langsung agar
+// tailwind-reference.js tidak perlu memetakan baris tabel untuk id baru ini.
+function layout(lessonId, sectionId, title, context, explanation, html, exercise, note, rows) {
+  const lesson = lessonById(lessonId);
+  (lesson.sections ||= []).push({
+    id: sectionId, title, paragraphs: [context, explanation], exercise, note, rows, codeFile: "html",
+    code: {
+      html: `<main class="min-h-screen bg-slate-50 p-6 text-slate-900">\n${html}\n</main>`,
+      css: lesson.code.css,
+      js: "// Contoh tata letak ini tidak membutuhkan JavaScript."
+    }
+  });
+}
+// Kotak kalem: latar lembut, border senada, teks terbaca. tone memakai palet bawaan.
+const cell = (text, tone = "slate", extra = "") => `<div class="rounded border border-${tone}-300 bg-${tone}-100 p-4 text-${tone}-700 ${extra}">${text}</div>`;
+
+// Section pendahuluan "Konsep dasar": diletakkan paling awal (unshift) agar menjadi
+// bagian pertama yang dibaca sebelum variasi. explanation boleh berupa satu string
+// atau array paragraf (untuk penjelasan bertahap). Penjelasan rinci/teori dipindahkan
+// ke contoh berikutnya oleh tailwind-details.js agar intro tetap ringkas dan fokus.
+function intro(lessonId, sectionId, title, context, explanation, html, exercise, note, rows) {
+  const lesson = lessonById(lessonId);
+  (lesson.sections ||= []).unshift({
+    id: sectionId, title, paragraphs: [context, ...(Array.isArray(explanation) ? explanation : [explanation])], exercise, note, rows, codeFile: "html",
+    code: {
+      html: `<main class="min-h-screen bg-slate-50 p-6 text-slate-900">\n${html}\n</main>`,
+      css: lesson.code.css,
+      js: "// Contoh konsep dasar ini tidak membutuhkan JavaScript."
+    }
+  });
+}
+intro("tw-flex-direction", "konsep-dasar", "Konsep dasar: apa itu Flexbox",
+  "Paling gampang, bayangkan menata barang berjajar dalam satu baris (atau satu tumpukan ke bawah): Flexbox membuat satu wadah induk mengatur anak-anaknya di sepanjang SATU arah saja. Pas untuk navbar, deretan tombol, atau menu.",
+  [
+    "Beberapa class bekerja sama membentuk layout flex, dan paling enak dipelajari berurutan satu per satu.",
+    "(1) flex menyalakan mode flex pada wadah induk — tanpa ini, class flex lain tidak berpengaruh. (2) flex-row menata anak mendatar (default) dan flex-col menata menurun; inilah arah sumbu utama. (3) justify-* membagi ruang di sepanjang sumbu utama — misalnya justify-between menjauhkan anak ke tepi, justify-center memusatkannya.",
+    "(4) items-* mengatur perataan di sumbu silang (tegak lurus sumbu utama), misalnya items-center membuat anak sejajar tengah. (5) gap-3 mengatur jarak antar-anak agar tidak menempel. Jadi alur berpikirnya: nyalakan flex → pilih arah → bagi ruang dengan justify → ratakan dengan items → rapikan jaraknya dengan gap. Contoh di bawah memakai flex dan gap-3; coba tambahkan justify-* dan items-* sendiri."
+  ],
+  `<p class="mb-2 font-semibold">Induk flex dengan tiga anak</p>\n<div class="flex gap-3 rounded border border-slate-300 bg-slate-100 p-3">\n  ${cell("Anak 1", "sky")}\n  ${cell("Anak 2", "sky")}\n  ${cell("Anak 3", "sky")}\n</div>\n<p class="mt-4 text-slate-600">Ganti flex menjadi flex flex-col untuk arah menurun; atau tambahkan justify-between dan items-center untuk mencoba kedua sumbu.</p>`,
+  "Ketik induk flex berisi tiga anak. Lalu coba flex-col, justify-center, dan items-center satu per satu sambil mengamati perubahannya.",
+  "Class flex selalu diletakkan pada induk; arah dan perataan diatur dari induk, bukan dari tiap anak.",
+  [["display: flex", "flex", "Menyalakan mode flex pada wadah induk; tanpa ini class flex lain tidak berpengaruh."], ["flex-direction", "flex-row · flex-col", "Pilih arah sumbu utama: mendatar (default) atau menurun."], ["justify-content", "justify-start · justify-center · justify-between", "Bagi ruang anak di sepanjang sumbu utama."], ["align-items", "items-start · items-center · items-end", "Ratakan anak pada sumbu silang (tegak lurus sumbu utama)."], ["gap", "gap-3", "Jarak antar-anak tanpa margin manual."]]);
+intro("tw-grid-template", "konsep-dasar", "Konsep dasar: apa itu Grid",
+  "Paling gampang, bayangkan buku tulis kotak-kotak atau rak bersekat: Grid mengubah satu wadah menjadi kotak-kotak rapi, lalu kamu tinggal memasukkan isi ke dalam kotaknya. Pas dipakai saat ingin menata banyak kartu supaya sejajar dan tidak berantakan.",
+  [
+    "Beberapa class bekerja sama membentuk layout grid, dan paling enak dipelajari berurutan satu per satu.",
+    "(1) grid menyalakan mode grid pada wadah induk — tanpa ini, class grid lain tidak berpengaruh. (2) grid-cols-3 menentukan jumlah KOLOM, yaitu kerangka mendatarnya; anak mengisi kolom berurutan dari kiri ke kanan. (3) grid-rows-2 menentukan jumlah BARIS bila ingin membagi tinggi — opsional, karena baris juga muncul otomatis mengikuti jumlah isi.",
+    "(4) col-span-2 atau row-span-2 membuat SATU kotak melebar menempati beberapa kolom atau baris, misalnya header atau panel utama. (5) gap-3 mengatur jarak antar-kotak agar tidak saling menempel. Jadi alur berpikirnya: nyalakan grid → tentukan kolom (dan baris bila perlu) → lebarkan item tertentu dengan span → rapikan jaraknya dengan gap. Contoh di bawah memakai grid, grid-cols-3, gap-3, dan satu header col-span-3 sekaligus."
+  ],
+  `<p class="mb-2 font-semibold">Grid 3 kolom dengan satu header yang melebar</p>\n<div class="grid grid-cols-3 gap-3 rounded border border-slate-300 bg-slate-100 p-3">\n  ${cell("Header — col-span-3 (melebar 3 kolom)", "sky", "col-span-3")}\n  ${["Kotak 1", "Kotak 2", "Kotak 3", "Kotak 4", "Kotak 5", "Kotak 6"].map((t) => cell(t, "emerald")).join("\n  ")}\n</div>\n<p class="mt-4 text-slate-600">Header memakai col-span-3 sehingga melebar penuh; enam kotak di bawahnya mengisi tiga kolom menjadi dua baris.</p>`,
+  "Ganti grid-cols-3 menjadi grid-cols-2 lalu grid-cols-6 (angka = kotak per baris). Lalu ubah header dari col-span-3 menjadi col-span-2 dan amati ruang yang tersisa di barisnya.",
+  "grid dan grid-cols-* dipasang di WADAH induk, bukan di tiap anak. Kamu cukup menentukan jumlah kolom; jumlah baris muncul sendiri mengikuti banyaknya isi.",
+  [["display: grid", "grid", "Menyalakan mode grid pada wadah induk; tanpa ini class grid lain tidak berpengaruh."], ["grid-template-columns", "grid-cols-3", "Menentukan jumlah KOLOM; anak mengisi kolom berurutan dari kiri ke kanan."], ["grid-template-rows", "grid-rows-2", "Menentukan jumlah BARIS bila ingin membagi tinggi; opsional, baris bisa muncul otomatis."], ["grid-column / grid-row: span", "col-span-2 · row-span-2", "Membuat satu kotak melebar menempati beberapa kolom atau baris (mis. header atau panel utama)."], ["gap", "gap-3", "Jarak antar-kotak di dalam grid tanpa menambah ruang di tepi luar."]]);
+
+// --- Variasi Flexbox (satu dimensi: susun pada satu sumbu) ---
+layout("tw-flex-direction", "tata-navbar", "Tata letak: navbar brand dan menu",
+  "Header situs biasanya menaruh brand di kiri dan menu di kanan pada satu baris.",
+  "justify-between mendorong dua kelompok ke tepi berlawanan; items-center menyejajarkannya vertikal. Grup menu memakai flex gap sendiri agar jaraknya rata.",
+  `<nav class="flex items-center justify-between rounded border border-slate-300 bg-white p-3">\n  ${cell("Brand", "sky")}\n  <div class="flex gap-2">${cell("Menu 1", "slate")}${cell("Menu 2", "slate")}${cell("Menu 3", "slate")}</div>\n</nav>`,
+  "Ganti justify-between menjadi justify-center lalu amati posisi brand dan menu.",
+  "flex diletakkan pada induk nav; brand dan grup menu adalah dua anak langsung.",
+  [["justify-content: space-between", "justify-between", "Anak pertama ke kiri, terakhir ke kanan, sisa ruang di tengah."], ["align-items: center", "items-center", "Sejajarkan anak pada sumbu silang (vertikal pada baris)."]]);
+layout("tw-flex-direction", "tata-tengah", "Tata letak: konten di tengah layar",
+  "Kotak login atau pesan kosong sering diletakkan tepat di tengah sebuah area.",
+  "items-center memusatkan vertikal dan justify-center memusatkan horizontal. Tinggi h-64 menyediakan ruang agar pemusatan terlihat.",
+  `<div class="flex h-64 items-center justify-center rounded border border-slate-300 bg-slate-100">\n  ${cell("Konten di tengah dua sumbu", "emerald")}\n</div>`,
+  "Hapus h-64 dan amati mengapa pemusatan vertikal tidak lagi tampak.",
+  "Pemusatan sumbu silang butuh tinggi induk; tanpa ruang kosong tidak ada yang bisa dipusatkan.",
+  [["display: flex", "flex", "Aktifkan konteks flex pada induk."], ["justify-content / align-items: center", "justify-center · items-center", "Pusatkan anak pada kedua sumbu sekaligus."]]);
+layout("tw-flex-direction", "tata-sidebar", "Tata letak: sidebar dan konten",
+  "Dashboard sering memakai sidebar berlebar tetap dan konten yang mengisi sisanya.",
+  "Sidebar w-48 shrink-0 menjaga lebarnya; konten grow mengambil seluruh ruang tersisa pada baris.",
+  `<div class="flex gap-4">\n  ${cell("Sidebar", "sky", "w-48 shrink-0")}\n  ${cell("Konten utama mengisi sisa lebar", "slate", "grow")}\n</div>`,
+  "Ganti w-48 menjadi w-64 dan amati lebar konten menyesuaikan.",
+  "shrink-0 mencegah sidebar ikut mengecil ketika ruang menyempit.",
+  [["lebar tetap (tidak menyusut)", "w-48 shrink-0", "Sidebar mempertahankan lebar awalnya."], ["flex-grow: 1", "grow", "Konten mengambil ruang kosong yang tersisa."]]);
+layout("tw-flex-direction", "tata-kartu-sama", "Tata letak: tiga kartu sama lebar",
+  "Tiga kartu fitur sebaiknya memiliki lebar yang sama rata.",
+  "flex-1 pada setiap kartu membagi ruang dari basis nol sehingga ketiganya sama lebar.",
+  `<div class="flex gap-4">\n  ${cell("Kartu 1", "violet", "flex-1")}\n  ${cell("Kartu 2", "violet", "flex-1")}\n  ${cell("Kartu 3", "violet", "flex-1")}\n</div>`,
+  "Tambah satu kartu lagi dengan flex-1 dan amati lebar menyesuaikan otomatis.",
+  "flex-1 menyamakan pembagian ruang, bukan menyamakan isi tiap kartu.",
+  [["flex: 1 1 0%", "flex-1", "Bagi ruang rata dari basis nol untuk tiap kartu."]]);
+layout("tw-flex-direction", "tata-media", "Tata letak: avatar dan teks (media object)",
+  "Komentar atau profil menampilkan avatar di kiri dan teks keterangan di kanan.",
+  "items-start menjajarkan keduanya dari atas; avatar shrink-0 berukuran tetap sedangkan blok teks grow mengisi sisa.",
+  `<div class="flex items-start gap-4 rounded border border-slate-300 bg-white p-4">\n  ${cell("Avatar", "amber", "w-16 shrink-0 text-center")}\n  <div class="grow">\n    <p class="font-semibold">Nama pengguna</p>\n    <p class="text-slate-600">Teks keterangan berada di sebelah kanan avatar.</p>\n  </div>\n</div>`,
+  "Ganti items-start menjadi items-center dan amati posisi avatar terhadap teks.",
+  "Pola media object: gambar berukuran tetap, teks fleksibel mengisi sisa.",
+  [["align-items: flex-start", "items-start", "Sejajarkan anak dari sisi atas baris."], ["flex-grow: 1", "grow", "Blok teks mengisi sisa lebar."]]);
+layout("tw-flex-direction", "tata-footer-nempel", "Tata letak: footer menempel di bawah",
+  "Kartu panel kadang perlu footer yang selalu di bawah meski kontennya pendek.",
+  "flex-col menyusun anak vertikal; konten grow mengambil sisa tinggi sehingga footer terdorong ke dasar.",
+  `<div class="flex h-64 flex-col rounded border border-slate-300 bg-white">\n  ${cell("Header", "sky", "m-3")}\n  <div class="grow p-3">Konten tumbuh mengisi bagian tengah.</div>\n  ${cell("Footer", "slate", "m-3")}\n</div>`,
+  "Hapus grow pada konten dan amati footer naik mengikuti isi.",
+  "Pada flex-col, grow membagi ruang vertikal, bukan horizontal.",
+  [["flex-direction: column", "flex-col", "Susun anak dari atas ke bawah."], ["flex-grow: 1", "grow", "Konten mengisi sisa tinggi; footer terdorong ke bawah."]]);
+layout("tw-flex-direction", "tata-chip", "Tata letak: deretan chip yang membungkus",
+  "Daftar tag atau kategori perlu pindah baris sendiri saat tidak muat satu baris.",
+  "flex-wrap mengizinkan chip turun ke baris berikutnya; gap menjaga jarak antarbaris dan antarchip.",
+  `<div class="flex flex-wrap gap-2 rounded border border-slate-300 bg-slate-100 p-3">\n  ${["HTML", "CSS", "JavaScript", "Tailwind", "Flexbox", "Grid", "jQuery"].map((t) => cell(t, "emerald")).join("\n  ")}\n</div>`,
+  "Ganti flex-wrap menjadi flex-nowrap dan perhatikan chip meluber keluar.",
+  "Wrap bergantung pada lebar induk dan ukuran chip, bukan jumlah tertentu.",
+  [["flex-wrap: wrap", "flex-wrap", "Izinkan anak pindah baris saat ruang habis."], ["gap", "gap-2", "Jarak seragam antarchip di semua baris."]]);
+layout("tw-flex-direction", "tata-split", "Tata letak: dua panel setara",
+  "Tampilan editor dan preview sering membagi layar menjadi dua panel setara.",
+  "Dua anak flex-1 membagi lebar 50/50; h-48 memberi tinggi yang sama.",
+  `<div class="flex h-48 gap-4">\n  ${cell("Panel kiri", "sky", "flex-1")}\n  ${cell("Panel kanan", "violet", "flex-1")}\n</div>`,
+  "Ubah salah satu flex-1 menjadi flex-[2] agar satu panel dua kali lebih lebar.",
+  "Rasio diatur lewat nilai flex, bukan lebar tetap.",
+  [["flex: 1 1 0%", "flex-1", "Bagi lebar rata antara kedua panel."]]);
+layout("tw-flex-direction", "tata-toolbar", "Tata letak: toolbar alat dan aksi",
+  "Toolbar mengelompokkan alat di kiri dan tombol aksi utama di kanan.",
+  "justify-between memisahkan grup alat dan tombol aksi; tiap grup memakai flex gap sendiri (flex bersarang).",
+  `<div class="flex items-center justify-between rounded border border-slate-300 bg-white p-2">\n  <div class="flex gap-2">${cell("Bold", "slate")}${cell("Italic", "slate")}${cell("List", "slate")}</div>\n  ${cell("Simpan", "emerald")}\n</div>`,
+  "Tambahkan satu tombol alat baru di grup kiri dan amati posisinya.",
+  "Flex dapat bersarang: induk mengatur dua kelompok, kelompok mengatur isinya.",
+  [["justify-content: space-between", "justify-between", "Pisahkan grup alat dan tombol aksi ke dua sisi."], ["display: flex", "flex gap-2", "Susun tombol dalam satu grup dengan jarak rata."]]);
+layout("tw-flex-direction", "tata-menu-vertikal", "Tata letak: menu samping vertikal",
+  "Menu samping menyusun tautan dari atas ke bawah dalam satu kolom.",
+  "flex-col menata anak vertikal; gap menjaga jarak antarmenu tanpa margin manual.",
+  `<nav class="flex w-48 flex-col gap-2 rounded border border-slate-300 bg-white p-3">\n  ${["Dashboard", "Materi", "Latihan", "Nilai"].map((t) => cell(t, "sky")).join("\n  ")}\n</nav>`,
+  "Ganti flex-col menjadi flex-row dan amati menu berubah mendatar.",
+  "Satu class arah menentukan sumbu utama seluruh menu.",
+  [["flex-direction: column", "flex-col", "Tata tautan dari atas ke bawah."], ["gap", "gap-2", "Jarak seragam antartautan."]]);
+
+// --- Variasi Grid (dua dimensi: track baris dan kolom bersama) ---
+layout("tw-grid-template", "kisi-3kolom", "Tata letak: tiga kolom sejajar",
+  "Tiga kolom sejajar adalah kerangka paling dasar sebuah grid.",
+  "grid-cols-3 membuat tiga track sama lebar; gap memberi sela tanpa menambah ruang di tepi luar.",
+  `<div class="grid grid-cols-3 gap-4">\n  ${["Kolom 1", "Kolom 2", "Kolom 3"].map((t) => cell(t, "slate")).join("\n  ")}\n</div>`,
+  "Ganti grid-cols-3 menjadi grid-cols-4 lalu grid-cols-2.",
+  "Jumlah kolom ditentukan induk; item mengisi kolom secara berurutan.",
+  [["grid-template-columns: repeat(3, 1fr)", "grid-cols-3", "Tiga kolom sama lebar pada induk."], ["gap", "gap-4", "Sela antar-track tanpa ruang di tepi luar."]]);
+layout("tw-grid-template", "kisi-responsif", "Tata letak: kartu responsif menambah kolom",
+  "Katalog produk menambah kolom seiring layar melebar.",
+  "grid-cols-1 berlaku di lebar kecil; sm:grid-cols-2 dan lg:grid-cols-3 menambah kolom pada breakpoint. Breakpoint mengikuti lebar preview.",
+  `<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">\n  ${["Kartu 1", "Kartu 2", "Kartu 3", "Kartu 4", "Kartu 5", "Kartu 6"].map((t) => cell(t, "violet")).join("\n  ")}\n</div>`,
+  "Perbesar dan perkecil jendela preview, lalu hitung jumlah kolom di tiap ukuran.",
+  "Prefix breakpoint hanya menambahkan aturan pada lebar tertentu; dasar tetap satu kolom.",
+  [["grid-template-columns (mobile-first)", "grid-cols-1", "Satu kolom sebagai dasar di layar kecil."], ["@media (min-width)", "sm:grid-cols-2 · lg:grid-cols-3", "Tambah kolom saat lebar mencapai breakpoint."]]);
+layout("tw-grid-template", "kisi-sidebar", "Tata letak: kolom tetap dan kolom fleksibel",
+  "Grid bisa mencampur lebar tetap dan lebar fleksibel dalam satu baris.",
+  "grid-cols-[12rem_1fr] membuat kolom kiri selebar 12rem dan kolom kanan mengambil sisa ruang (1fr).",
+  `<div class="grid grid-cols-[12rem_1fr] gap-4">\n  ${cell("Sidebar", "sky")}\n  ${cell("Konten utama", "slate")}\n</div>`,
+  "Ubah 12rem menjadi 16rem dan amati konten menyesuaikan.",
+  "Nilai dalam kurung siku memakai satuan literal; underscore mewakili spasi antar-track.",
+  [["grid-template-columns: 12rem 1fr", "grid-cols-[12rem_1fr]", "Kolom tetap 12rem di kiri, sisa ruang (1fr) di kanan."]]);
+layout("tw-grid-template", "kisi-halaman", "Tata letak: header, sidebar, konten, footer",
+  "Tata letak halaman klasik: header dan footer penuh, sidebar sempit, konten lebar.",
+  "Induk empat kolom. Header dan footer col-span-4 memenuhi baris; sidebar col-span-1 dan konten col-span-3 berbagi baris tengah.",
+  `<div class="grid grid-cols-4 gap-3">\n  ${cell("Header", "sky", "col-span-4")}\n  ${cell("Sidebar", "emerald", "col-span-1")}\n  ${cell("Konten utama", "slate", "col-span-3")}\n  ${cell("Footer", "sky", "col-span-4")}\n</div>`,
+  "Ubah konten menjadi col-span-2 dan sidebar col-span-2; amati keseimbangannya.",
+  "Jumlah span sidebar dan konten harus total empat agar baris tengah penuh.",
+  [["grid-column: span 4", "col-span-4", "Elemen memenuhi keempat kolom (header/footer)."], ["grid-column: span 1 / span 3", "col-span-1 · col-span-3", "Sidebar dan konten berbagi baris tengah."]]);
+layout("tw-grid-template", "kisi-dashboard", "Tata letak: panel besar dan kartu kecil",
+  "Dashboard sering punya satu panel besar dan beberapa kartu kecil di sampingnya.",
+  "Panel utama col-span-2 row-span-2 mengisi blok 2x2; dua kartu kecil mengisi kolom ketiga.",
+  `<div class="grid h-64 grid-cols-3 grid-rows-2 gap-3">\n  ${cell("Panel utama", "violet", "col-span-2 row-span-2")}\n  ${cell("Kartu A", "slate")}\n  ${cell("Kartu B", "slate")}\n</div>`,
+  "Ganti row-span-2 menjadi row-span-1 dan amati petak yang tersisa.",
+  "Span menghitung jumlah track; pastikan induk punya cukup kolom dan baris.",
+  [["grid-column/row: span 2", "col-span-2 · row-span-2", "Panel memakai dua kolom dan dua baris."], ["grid-template-rows: repeat(2, 1fr)", "grid-rows-2", "Dua baris sebagai kerangka tinggi."]]);
+layout("tw-grid-template", "kisi-galeri", "Tata letak: galeri rapat",
+  "Galeri menata banyak gambar dalam kisi yang rapat.",
+  "grid-cols-4 membuat empat kolom; delapan item otomatis mengisi dua baris lewat auto-placement.",
+  `<div class="grid grid-cols-4 gap-2">\n  ${Array.from({ length: 8 }, (_, i) => cell(`Foto ${i + 1}`, "amber")).join("\n  ")}\n</div>`,
+  "Ubah grid-cols-4 menjadi grid-cols-2 dan hitung jumlah baris.",
+  "Item yang lebih banyak dari kolom akan membuat baris implisit otomatis.",
+  [["grid-template-columns: repeat(4, 1fr)", "grid-cols-4", "Empat kolom sama lebar."], ["grid-auto-flow (otomatis)", "auto-placement", "Item berikutnya mengisi baris baru tanpa grid-rows."]]);
+layout("tw-grid-template", "kisi-2baris", "Tata letak: dua baris tinggi berbeda",
+  "Dua baris dengan tinggi berbeda, misalnya ringkasan kecil di atas dan detail besar di bawah.",
+  "grid-rows-[1fr_2fr] membagi tinggi dengan rasio 1:2 setelah gap diperhitungkan; h-64 menyediakan tingginya.",
+  `<div class="grid h-64 grid-rows-[1fr_2fr] gap-3">\n  ${cell("Baris 1 (1 bagian)", "sky")}\n  ${cell("Baris 2 (2 bagian)", "violet")}\n</div>`,
+  "Balik menjadi grid-rows-[2fr_1fr] dan amati baris mana yang lebih tinggi.",
+  "fr membagi sisa ruang secara proporsional, bukan piksel tetap.",
+  [["grid-template-rows: 1fr 2fr", "grid-rows-[1fr_2fr]", "Baris kedua dua kali tinggi baris pertama."]]);
+layout("tw-grid-template", "kisi-kartu-unggulan", "Tata letak: satu kartu lebih lebar",
+  "Satu kartu unggulan ingin lebih lebar daripada kartu lain dalam kisi yang sama.",
+  "col-span-2 membuat kartu unggulan memakai dua kolom; kartu lain mengisi sisa petak secara berurutan.",
+  `<div class="grid grid-cols-3 gap-4">\n  ${cell("Unggulan", "emerald", "col-span-2")}\n  ${cell("Biasa 1", "slate")}\n  ${cell("Biasa 2", "slate")}\n  ${cell("Biasa 3", "slate")}\n</div>`,
+  "Ganti col-span-2 menjadi col-span-3 lalu amati kartu lain turun baris.",
+  "Span mengubah lebar satu item, bukan template seluruh induk.",
+  [["grid-column: span 2", "col-span-2", "Kartu unggulan memakai dua kolom."]]);
+layout("tw-grid-template", "kisi-form", "Tata letak: form dua kolom",
+  "Form dua kolom menata field berpasangan dengan garis yang rapi.",
+  "grid-cols-2 menata dua field per baris; field panjang memakai col-span-2 agar memenuhi lebar.",
+  `<div class="grid grid-cols-2 gap-4 rounded border border-slate-300 bg-white p-4">\n  ${cell("Nama depan", "slate")}\n  ${cell("Nama belakang", "slate")}\n  ${cell("Email", "slate", "col-span-2")}\n  ${cell("Alamat", "slate", "col-span-2")}\n</div>`,
+  "Buat field Email kembali satu kolom dengan menghapus col-span-2.",
+  "Grid menjaga garis kolom tetap sejajar antarbaris form.",
+  [["grid-template-columns: repeat(2, 1fr)", "grid-cols-2", "Dua field sejajar per baris."], ["grid-column: span 2", "col-span-2", "Field panjang memenuhi kedua kolom."]]);
+layout("tw-grid-template", "kisi-flex-kartu", "Tata letak: grid di luar, flex di dalam kartu",
+  "Grid menata kumpulan kartu, sedangkan isi tiap kartu memakai flex.",
+  "Induk grid-cols-2 membuat dua kolom kartu. Di dalam kartu, flex justify-between memisahkan judul dan tombol.",
+  `<div class="grid grid-cols-2 gap-4">\n  ${["Kelas HTML", "Kelas CSS"].map((t) => `<article class="rounded border border-amber-300 bg-white p-3">\n    <div class="flex items-center justify-between gap-2">\n      <h3 class="font-semibold">${t}</h3>\n      ${cell("Lihat", "sky")}\n    </div>\n  </article>`).join("\n  ")}\n</div>`,
+  "Ubah grid-cols-2 menjadi grid-cols-1; perhatikan baris judul-tombol tetap flex.",
+  "Model layout berlaku per induk: grid di luar, flex di dalam kartu.",
+  [["display: grid (luar)", "grid-cols-2", "Dua kolom kartu pada induk."], ["display: flex (dalam)", "flex justify-between", "Judul dan tombol dipisah di dalam kartu."]]);
+layout("tw-grid-template", "kisi-sel-flex", "Tata letak: tiap sel memusatkan isinya",
+  "Setiap sel grid bisa memusatkan isinya sendiri dengan flex.",
+  "grid-cols-3 membagi tiga sel sama lebar; tiap sel memakai flex items-center justify-center untuk memusatkan label.",
+  `<div class="grid grid-cols-3 gap-3">\n  ${["Beranda", "Materi", "Kontak"].map((t) => `<div class="flex items-center justify-center rounded border border-sky-300 bg-sky-100 p-4 text-sky-700">${t}</div>`).join("\n  ")}\n</div>`,
+  "Tambah satu sel keempat dan amati grid membuat baris baru.",
+  "Grid mengatur kerangka sel; flex mengatur isi di dalam sel.",
+  [["grid-template-columns: repeat(3, 1fr)", "grid-cols-3", "Tiga sel sama lebar."], ["justify/align center (dalam sel)", "flex items-center justify-center", "Pusatkan label di tiap sel."]]);
+layout("tw-grid-template", "kisi-footer", "Tata letak: footer multi-kolom",
+  "Footer situs menata beberapa kolom tautan yang rapi.",
+  "grid-cols-3 membuat tiga kolom kategori; tiap kolom memakai flex-col agar judul dan tautannya menurun.",
+  `<footer class="grid grid-cols-3 gap-6 rounded border border-slate-300 bg-white p-4">\n  ${["Produk", "Perusahaan", "Bantuan"].map((judul) => `<div class="flex flex-col gap-1">\n    <p class="font-semibold">${judul}</p>\n    <span class="text-slate-600">Tautan 1</span>\n    <span class="text-slate-600">Tautan 2</span>\n  </div>`).join("\n  ")}\n</footer>`,
+  "Ubah grid-cols-3 menjadi grid-cols-2 dan amati kolom ketiga turun.",
+  "Grid membagi kolom luar; flex-col menyusun isi tiap kolom.",
+  [["grid-template-columns: repeat(3, 1fr)", "grid-cols-3", "Tiga kolom kategori footer."], ["flex-direction: column (dalam)", "flex flex-col", "Judul dan tautan menurun di tiap kolom."]]);
+
 example("tw-font", "keluarga", "Font family: memilih karakter huruf", "Isi artikel dan contoh kode punya kebutuhan berbeda. Kita memilih keluarga huruf sebelum membahas besar-kecilnya.", "Tiga paragraf memakai ukuran yang sama, tetapi font-sans, font-serif, dan font-mono berbeda. Bandingkan bentuk huruf serta lebar karakter.", '<div class="space-y-4 text-xl"><p class="font-sans">Huruf sans untuk antarmuka.</p><p class="font-serif">Huruf serif untuk nuansa artikel.</p><p class="font-mono">const nama = "Ayu";</p></div>', "Tukar font-serif menjadi font-sans tanpa mengganti ukuran.", "Font yang tersedia pada perangkat dapat memengaruhi tampilan akhir keluarga font.");
 example("tw-font", "ukuran", "Font size: membangun hierarki", "Judul perlu terlihat lebih penting daripada keterangan kecil.", "Text-3xl, text-base, dan text-sm membedakan tingkat informasi. Semuanya memakai keluarga huruf yang sama agar pengaruh ukuran jelas.", '<h3 class="text-3xl">Judul artikel</h3><p class="mt-3 text-base">Isi artikel yang kita baca.</p><p class="mt-3 text-sm">Keterangan tambahan.</p>', "Ubah judul menjadi text-5xl dan bandingkan kenyamanan baca.", "Ukuran teks Tailwind biasanya juga memiliki line-height bawaan.");
 example("tw-font", "ketebalan", "Font weight: memberi penekanan", "Informasi penting dapat ditekankan tanpa memperbesar seluruh tulisan.", "Bandingkan font-normal, font-semibold, dan font-bold dengan ukuran sama. Ketebalan punya tugas berbeda dari ukuran.", '<div class="space-y-3 text-xl"><p class="font-normal">Informasi biasa</p><p class="font-semibold">Subjudul</p><p class="font-bold">Pesan penting</p></div>', "Ganti font-bold menjadi font-light.", "Jangan menebalkan semua isi sekaligus; penekanan kehilangan arti jika semua sama kuat.");

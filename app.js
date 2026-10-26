@@ -242,7 +242,7 @@ function renderNavigation() {
     <details class="nav-section" data-track="${track.sectionId}" ${track.sectionId === currentLesson().sectionId ? "open" : ""}>
       <summary class="nav-section-heading"><span>${escapeHtml(track.sectionLabel)}</span> <small>${track.groups.length} section</small></summary>
       ${track.groups.map((group) => `
-        <details class="nav-group" open>
+        <details class="nav-group"${group.lessons.some((lesson) => lesson.id === state.lessonId) ? " open" : ""}>
           <summary>${group.number}. ${escapeHtml(group.title)}</summary>
           ${group.lessons.map((lesson) => `
             <div class="nav-lesson-item">
@@ -304,19 +304,25 @@ function filterNavigation() {
 }
 
 function updateActiveNavigation() {
+  // Pencarian memakai buka/tutup sementara sendiri; jangan di-accordion saat mencari.
+  const searching = $("#lessonSearch").value.trim() !== "";
   $$(".nav-section").forEach((track) => {
     track.classList.toggle("has-active-page", track.dataset.track === currentLesson().sectionId);
   });
+  let activeGroup = null;
   $$(".nav-lesson").forEach((button) => {
     const active = button.dataset.lessonId === state.lessonId;
     button.classList.toggle("is-active", active);
     if (active) {
       button.setAttribute("aria-current", "page");
       const group = button.closest(".nav-group");
+      activeGroup = group;
       group.open = true;
       if (group.dataset.searchOpen) group.dataset.searchOpen = "true";
     } else button.removeAttribute("aria-current");
   });
+  // Accordion: hanya kelompok materi yang terakhir diakses yang terbuka; sisanya dilipat.
+  if (!searching) $$(".nav-group").forEach((group) => { group.open = group === activeGroup; });
   $$(".nav-subsection").forEach((link) => {
     const active = link.dataset.lessonId === state.lessonId && link.dataset.sectionId === state.sectionId;
     link.classList.toggle("is-active", active);

@@ -18,7 +18,7 @@ http://localhost/tailwind-jquery-tutorial/
 
 ### Dengan PHP built-in server
 
-Dari folder project:
+Untuk menjalankan server di foreground dari folder project:
 
 ```powershell
 php -S localhost:8000
@@ -26,21 +26,31 @@ php -S localhost:8000
 
 Lalu buka `http://localhost:8000`.
 
+Untuk menjalankan server di background, buka PowerShell dari root project dan jalankan:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\start-server.ps1
+```
+
+Skrip memakai PHP di `PATH`, menggunakan port 8000, dan menampilkan URL serta PID proses. Port alternatif dapat diberikan, misalnya `-Port 8080`. Log tersimpan di folder temporary Windows `tailwind-jquery-tutorial-server`.
+
 ## Setup Node.js dan `node_modules`
 
 Untuk menjalankan aplikasi utama, **tidak perlu `npm install`**. Frontend memakai library lokal di `vendor/`, dan server PHP menangani API serta database SQLite. Jadi setelah clone, cukup siapkan PHP seperti di atas; folder `node_modules` tidak diperlukan untuk penggunaan sehari-hari.
 
 Node.js dan npm diperlukan hanya bila mengubah source editor dan membangun ulang bundle browser. Toolchain build sudah disediakan mandiri di repo ini:
 
+`package.json` editor berada di `tools/material-editor/`, bukan di root repo. Karena itu, jalankan `npm ci` dari folder tersebut; menjalankannya langsung di root repo akan gagal karena root tidak memiliki `package.json` atau `package-lock.json`.
+
 ```powershell
-cd C:\laragon\www\tailwind-jquery-tutorial\tools\material-editor
+cd tools/material-editor
 npm ci
 npm run build
 cd ..\..
 node tests/verify-material-editor.mjs
 ```
 
-Perintah tersebut memasang dependency dari `tools/material-editor/package-lock.json` dan membangun `vendor/material-rich-editor.min.js`. Pengguna aplikasi tidak perlu menjalankan langkah ini; bundle hasil build sudah disertakan.
+Perintah tersebut mengasumsikan terminal dibuka dari root repo. `npm ci` memasang dependency dari `tools/material-editor/package-lock.json`, lalu build menghasilkan `vendor/material-rich-editor.min.js`. Pengguna aplikasi tidak perlu menjalankan langkah ini; bundle hasil build sudah disertakan.
 - Folder `contoh_script` memiliki `package.json` sendiri untuk eksperimen Tailwind 4/Vite. Jika mengerjakan contoh tersebut, pasang dependency di folder itu saja:
 
   ```powershell

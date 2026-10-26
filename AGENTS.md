@@ -16,7 +16,21 @@
 - Jika pemeriksaan dilewati, sebutkan dengan jelas. Jangan menyatakan build atau test lulus bila tidak dijalankan.
 - Jangan membuat test baru untuk perubahan teks atau visual sederhana. Tambahkan atau jalankan test bila pengguna memintanya atau perubahan perilaku perlu diverifikasi.
 - Jangan commit, push, deploy, atau mengirim pesan eksternal tanpa instruksi eksplisit.
+- Jika instruktur secara eksplisit meminta server dijalankan, jalankan `powershell -ExecutionPolicy Bypass -File .\scripts\start-server.ps1` dari root repo; skrip menyalakan PHP built-in server di background pada port 8000. Jangan jalankan server tanpa permintaan tersebut.
 - Sampaikan hasil dengan ringkas: perubahan utama, pemeriksaan yang dijalankan, dan keterbatasan yang relevan.
+
+## Percepat revisi → deploy
+
+- Deploy repo ini berarti commit lalu push ke server. Commit dan push tetap dikerjakan manual oleh instruktur; jangan commit, push, atau deploy tanpa instruksi eksplisit. Setelah revisi, cukup laporkan file yang berubah dan cek yang dijalankan agar siap di-push.
+- Perubahan frontend (`*.js` data materi, `app.js`, `code-editor.js`, `material-editor.js`, `styles.css`, `index.html`) langsung disajikan Apache tanpa build. Lewati `npm ci`, `npm run build`, dan restart server untuk perubahan semacam ini; cukup refresh browser untuk mengujinya.
+- Jalankan `npm ci` lalu `npm run build` dari `tools/material-editor` HANYA bila `material-rich-editor.mjs` atau `material-editor-icons.mjs` diubah, lalu verifikasi round-trip editor. Revisi lain tidak perlu menyentuh `vendor/` atau toolchain Node.
+- Untuk revisi teks, konten, atau visual tanpa dampak perilaku: lewati build dan test, cukup pemeriksaan terarah (baca ulang diff, cek sintaks bila relevan).
+- Jalankan hanya test terarah yang menyentuh area yang diubah, bukan seluruh suite:
+  - urutan atau ID materi Tailwind → `node tests/verify-tailwind-order.mjs`
+  - materi JavaScript dasar → `node tests/verify-javascript.mjs`
+  - editor materi atau penyimpanan SQLite → `node tests/verify-material-editor.mjs` (butuh PHP pada PATH)
+- Pertahankan ID halaman dan section saat merevisi agar route dan record SQLite tetap terbaca; ini mencegah kerja ulang setelah push.
+- Sebut dengan jelas cek yang dilewati; jangan menyatakan build atau test lulus bila tidak dijalankan.
 
 ## Requirement editor materi
 
